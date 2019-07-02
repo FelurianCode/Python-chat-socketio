@@ -38,7 +38,12 @@
 
 		//messages "history"
 		socket.on('message', function(msg){
-			$('#messages').append('</br><li class="message-li">'+ msg.user +': '+ msg.message +'</li></br>')
+			if (msg.error) {
+				$('#inputMessage').css({"color":"red","border":"1px solid red"});
+			}else{
+				$('#messages').append('</br><li class="message-li">'+ msg.user +': '+ msg.message +'</li></br>')
+			}
+
 		});
 
 		//Sending input message

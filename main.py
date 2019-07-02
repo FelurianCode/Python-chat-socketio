@@ -11,9 +11,23 @@ def index():
 
 @socketio.on('message') #if server listens to message event
 def handleMessage(message):
-    print("Message: " + str(message))  
-    send({'user': message['user'], 'message': message['message']}, broadcast = True) #Send message to all clients 
+	cleanMessage = sanitizeMessage(message['message'])
+	cleanUsername = sanitizeMessage(message['user'])
+	print(cleanMessage)
+	if message['message'] == '':
+		send({'error': ['Empty message']}, broadcast = True)
+	else:
+		print("Message: " + str(message))
+		send({'user': cleanUsername, 'message': cleanMessage}, broadcast = True) #Send message to all clients 
 
+
+
+
+def sanitizeMessage(message):
+	cleanMessage = message.replace('<', '&lt')
+	cleanMessage = cleanMessage.replace('>', '&gt')
+	cleanMessage = cleanMessage.replace('&', '&amp')
+	return cleanMessage
 
 
 if __name__ == '__main__':
