@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Python Chat</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+	<h1>SocketIO Chat</h1>
+
+	<ul id="messages"></ul>
+	<div id="div_name">
+		<label>Username:</label>
+		<input type="text" id="userName">
+		<button type="button" id="name_btn">Save</button>
+	</div>
+
+	<div id="div_sendmessage">
+		<input type="text" id="inputMessage">
+		<button type="button" id="send_btn">Send</button>
+	</div>
+
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js" charset="utf-8"></script>
+	<script>
+		$('#div_sendmessage').hide();
+
+		const socket = io();
+
+		//Send username, show message input after username is set
+		$('#name_btn').on('click', function() {
+	      $('#div_sendmessage').show();
+	      $('#div_name').hide();
+	      socket.username = $('#userName').val();
+	    });
+
+		//messages "history"
+		socket.on('message', function(msg){
+			$('#messages').append('</br><li class="message-li">'+ msg.user +': '+ msg.message +'</li></br>')
+		});
+
+		//Sending input message
+		$('#send_btn').on('click', function() {
+	      socket.send({user: socket.username, message: $('#inputMessage').val()});
+	      $('#inputMessage').val('');
+	    });
+
+	
+	</script>
+</body>
+</html>

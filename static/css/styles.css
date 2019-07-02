@@ -1,0 +1,9 @@
+.message-li{	
+	list-style-position: inside;
+    border: 1px solid #2e2e5f;
+    border-radius: 5px;
+    list-style: none;
+    display: inline-block;
+    padding: 5px;
+    background-color: aliceblue;
+}
